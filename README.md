@@ -26,9 +26,9 @@ module "dcos-security-groups" {
 | admin_ips | List of CIDR ips for admin access | list | - | yes |
 | cluster_name | Name of the DC/OS cluster | string | `aws-example` | no |
 | public_agents_ips | List of ips allowed access to public agents. admin_ips are joined to this list | list | `<list>` | no |
-| subnet_range | Specify the private ip space to be used in a CIDR format | string | - | yes |
-| tags | Add special tags to the resources created by this module | map | `<map>` | no |
-| vpc_id | The network to create firewall policies in | string | - | yes |
+| subnet_range | Private IP space to be used in a CIDR format | string | - | yes |
+| tags | Custom tags added to the resources created by this module | map | `<map>` | no |
+| vpc_id | VPC ID to create firewall policies in | string | - | yes |
 
 ## Outputs
 

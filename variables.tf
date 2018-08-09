@@ -15,15 +15,15 @@ variable "cluster_name" {
 }
 
 variable "tags" {
-  description = "Add special tags to the resources created by this module"
+  description = "Custom tags added to the resources created by this module"
   type        = "map"
   default     = {}
 }
 
 variable "subnet_range" {
-  description = "Specify the private ip space to be used in a CIDR format"
+  description = "Private IP space to be used in a CIDR format"
 }
 
 variable "vpc_id" {
-  description = "The network to create firewall policies in"
+  description = "VPC ID to create firewall policies in"
 }
