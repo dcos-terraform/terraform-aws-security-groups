@@ -8,7 +8,7 @@ EXAMPLE
 -------
 ```hcl
 module "dcos-security-groups" {
-  source  = "terraform-dcos/security-groups/aws"
+  source  = "dcos-terraform/security-groups/aws"
   version = "~> 0.1"
 
   vpc_id = "vpc-12345678"
