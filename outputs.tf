@@ -1,6 +1,6 @@
 output "internal" {
   value       = "${aws_security_group.internal.id}"
-  description = "Firewall rules for all private interfaces"
+  description = "This ELB is internal only"
 }
 
 output "master_lb" {

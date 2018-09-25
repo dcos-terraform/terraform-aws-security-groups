@@ -1,5 +1,5 @@
 variable "admin_ips" {
-  description = "List of CIDR ips for admin access"
+  description = "List of CIDR admin IPs"
   type        = "list"
 }
 
@@ -15,15 +15,15 @@ variable "cluster_name" {
 }
 
 variable "tags" {
-  description = "Custom tags added to the resources created by this module"
+  description = "Add custom tags to all resources"
   type        = "map"
   default     = {}
 }
 
 variable "subnet_range" {
-  description = "Private IP space to be used in a CIDR format"
+  description = "Private IP space to be used in CIDR format"
 }
 
 variable "vpc_id" {
-  description = "VPC ID to create firewall policies in"
+  description = "AWS VPC ID"
 }
