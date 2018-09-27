@@ -23,19 +23,19 @@ module "dcos-security-groups" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| admin_ips | List of CIDR ips for admin access | list | - | yes |
+| admin_ips | List of CIDR admin IPs | list | - | yes |
 | cluster_name | Name of the DC/OS cluster | string | `aws-example` | no |
 | public_agents_ips | List of ips allowed access to public agents. admin_ips are joined to this list | list | `<list>` | no |
-| subnet_range | Private IP space to be used in a CIDR format | string | - | yes |
-| tags | Custom tags added to the resources created by this module | map | `<map>` | no |
-| vpc_id | VPC ID to create firewall policies in | string | - | yes |
+| subnet_range | Private IP space to be used in CIDR format | string | - | yes |
+| tags | Add custom tags to all resources | map | `<map>` | no |
+| vpc_id | AWS VPC ID | string | - | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | admin | Firewall rules for debuging access |
-| internal | Firewall rules for all private interfaces |
+| internal | This ELB is internal only |
 | master_lb | Firewall rules for master load balancer |
 | public_agents | Firewall rules for public agents load balancer |
 
