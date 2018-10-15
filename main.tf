@@ -20,6 +20,10 @@
  *```
  */
 
+locals {
+  public_agents_additional_ports = "${concat(list("80","443"),var.public_agents_additional_ports)}"
+}
+
 provider "aws" {}
 
 resource "aws_security_group" "internal" {
@@ -75,49 +79,17 @@ resource "aws_security_group" "public_agents" {
 
   tags = "${merge(var.tags, map("Name", var.cluster_name,
                                 "Cluster", var.cluster_name))}"
+}
 
-  # Do not allow traffic on 22 (SSH) and 5051 (Mesos Agent)
-  ingress {
-    to_port     = 21
-    from_port   = 0
-    protocol    = "tcp"
-    cidr_blocks = ["${concat(var.admin_ips, var.public_agents_ips)}"]
-  }
+resource "aws_security_group_rule" "additional_rules" {
+  count       = "${length(local.public_agents_additional_ports)}"
+  type        = "ingress"
+  protocol    = "tcp"
+  from_port   = "${element(local.public_agents_additional_ports, count.index)}"
+  to_port     = "${element(local.public_agents_additional_ports, count.index)}"
+  cidr_blocks = ["${concat(var.admin_ips, var.public_agents_ips)}"]
 
-  ingress {
-    to_port     = 5050
-    from_port   = 23
-    protocol    = "tcp"
-    cidr_blocks = ["${concat(var.admin_ips, var.public_agents_ips)}"]
-  }
-
-  ingress {
-    to_port     = 32000
-    from_port   = 5052
-    protocol    = "tcp"
-    cidr_blocks = ["${concat(var.admin_ips, var.public_agents_ips)}"]
-  }
-
-  ingress {
-    to_port     = 21
-    from_port   = 0
-    protocol    = "udp"
-    cidr_blocks = ["${concat(var.admin_ips, var.public_agents_ips)}"]
-  }
-
-  ingress {
-    to_port     = 5050
-    from_port   = 23
-    protocol    = "udp"
-    cidr_blocks = ["${concat(var.admin_ips, var.public_agents_ips)}"]
-  }
-
-  ingress {
-    to_port     = 32000
-    from_port   = 5052
-    protocol    = "udp"
-    cidr_blocks = ["${concat(var.admin_ips, var.public_agents_ips)}"]
-  }
+  security_group_id = "${aws_security_group.public_agents.id}"
 }
 
 resource "aws_security_group" "admin" {
