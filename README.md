@@ -25,6 +25,7 @@ module "dcos-security-groups" {
 |------|-------------|:----:|:-----:|:-----:|
 | admin_ips | List of CIDR admin IPs | list | - | yes |
 | cluster_name | Name of the DC/OS cluster | string | `aws-example` | no |
+| public_agents_additional_ports | List of additional ports allowed for public access on public agents (80 and 443 open by default) | list | `<list>` | no |
 | public_agents_ips | List of ips allowed access to public agents. admin_ips are joined to this list | list | `<list>` | no |
 | subnet_range | Private IP space to be used in CIDR format | string | - | yes |
 | tags | Add custom tags to all resources | map | `<map>` | no |
