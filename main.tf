@@ -36,21 +36,21 @@ resource "aws_security_group" "internal" {
 }
 
 resource "aws_security_group_rule" "internal_ingress_rule" {
-  type            = "ingress"
-  from_port       = 0
-  to_port         = 0
-  protocol        = "-1"
+  type        = "ingress"
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
   cidr_blocks = ["${var.subnet_range}"]
 
   security_group_id = "${aws_security_group.internal.id}"
 }
 
 resource "aws_security_group_rule" "internal_egress_rule" {
-  type            = "egress"
-  from_port       = 0
-  to_port         = 0
-  protocol        = "-1"
-  cidr_blocks     = ["0.0.0.0/0"]
+  type        = "egress"
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
 
   security_group_id = "${aws_security_group.internal.id}"
 }
