@@ -3,7 +3,7 @@ variable "admin_ips" {
   type        = "list"
 }
 
-variable "public_agents_ips" {
+variable "public_agents_access_ips" {
   description = "List of ips allowed access to public agents. admin_ips are joined to this list"
   type        = "list"
   default     = ["0.0.0.0/0"]
