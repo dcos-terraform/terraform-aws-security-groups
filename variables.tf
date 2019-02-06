@@ -36,5 +36,6 @@ variable "public_agents_additional_ports" {
 
 variable "internal_networks" {
   description = "Subnet ranges for all internal networks"
-  default     = ""
+  type        = "list"
+  default     = []
 }

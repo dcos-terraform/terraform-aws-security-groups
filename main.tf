@@ -38,7 +38,7 @@ resource "aws_security_group" "internal" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["${coalesce(var.internal_networks, var.subnet_range)}"]
+    cidr_blocks = ["${var.subnet_range}", "${var.internal_networks}"]
   }
 
   egress {
