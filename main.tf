@@ -98,7 +98,7 @@ resource "aws_security_group_rule" "additional_rules" {
   protocol    = "tcp"
   from_port   = "${element(local.public_agents_additional_ports, count.index)}"
   to_port     = "${element(local.public_agents_additional_ports, count.index)}"
-  cidr_blocks = ["${var.public_agents_access_ips}"]
+  cidr_blocks = ["${distinct(var.public_agents_access_ips)}"]
 
   security_group_id = "${aws_security_group.public_agents.id}"
 }
