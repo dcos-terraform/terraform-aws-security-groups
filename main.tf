@@ -38,7 +38,7 @@ resource "aws_security_group" "internal" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["${var.subnet_range}", "${var.internal_networks}"]
+    cidr_blocks = ["${var.subnet_range}"]
   }
 
   egress {
@@ -47,6 +47,17 @@ resource "aws_security_group" "internal" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "aws_security_group_rule" "internal_networks_rules" {
+  count       = "${length(var.internal_networks) > 0 ? 1 : 0}"
+  type        = "ingress"
+  protocol    = "tcp"
+  from_port   = 0
+  to_port     = 65535
+  cidr_blocks = ["${compact(split(",",replace(join(",",var.internal_networks),"^${var.subnet_range}$", "")))}"]
+
+  security_group_id = "${aws_security_group.internal.id}"
 }
 
 resource "aws_security_group" "master_lb" {
