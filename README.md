@@ -13,7 +13,7 @@ module "dcos-security-groups" {
 
   vpc_id = "vpc-12345678"
   cluster_name = "production"
-  subnet_range = "172.12.0.0/16"
+  subnet_range = "172.16.0.0/16"
   admin_ips = ["1.2.3.4/32"]
 }
 ```
