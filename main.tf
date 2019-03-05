@@ -52,9 +52,9 @@ resource "aws_security_group" "internal" {
 resource "aws_security_group_rule" "internal_networks_rules" {
   count       = "${length(var.internal_networks) > 0 ? 1 : 0}"
   type        = "ingress"
-  protocol    = "tcp"
+  protocol    = "-1"
   from_port   = 0
-  to_port     = 65535
+  to_port     = 0
   cidr_blocks = ["${compact(split(",",replace(join(",",var.internal_networks),"^${var.subnet_range}$", "")))}"]
   security_group_id = "${aws_security_group.internal.id}"
 }
