@@ -56,7 +56,6 @@ resource "aws_security_group_rule" "internal_networks_rules" {
   from_port   = 0
   to_port     = 65535
   cidr_blocks = ["${compact(split(",",replace(join(",",var.internal_networks),"^${var.subnet_range}$", "")))}"]
-
   security_group_id = "${aws_security_group.internal.id}"
 }
 
