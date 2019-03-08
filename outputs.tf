@@ -1,6 +1,8 @@
 output "internal" {
-  value       = "${aws_security_group.internal.id}"
   description = "This ELB is internal only"
+  value       = "${coalesce(aws_security_group.internal.id, "")}"
+
+  # TODO(mbernadin): remove coalesce when nil on destroy is fixed: https://github.com/hashicorp/terraform/issues/17862
 }
 
 output "master_lb" {
