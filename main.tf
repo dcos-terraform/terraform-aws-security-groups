@@ -33,29 +33,25 @@ resource "aws_security_group" "internal" {
 
   tags = "${merge(var.tags, map("Name", var.cluster_name,
                                 "Cluster", var.cluster_name))}"
-
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["${var.subnet_range}"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
 
-resource "aws_security_group_rule" "internal_networks_rules" {
-  count       = "${length(var.internal_networks) > 0 ? 1 : 0}"
+resource "aws_security_group_rule" "internal_ingress_rule" {
   type        = "ingress"
-  protocol    = "-1"
   from_port   = 0
   to_port     = 0
+  protocol    = "-1"
   cidr_blocks = ["${compact(split(",",replace(join(",",var.internal_networks),"^${var.subnet_range}$", "")))}"]
+
+  security_group_id = "${aws_security_group.internal.id}"
+}
+
+resource "aws_security_group_rule" "internal_egress_rule" {
+  type        = "egress"
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+
   security_group_id = "${aws_security_group.internal.id}"
 }
 
