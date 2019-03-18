@@ -23,6 +23,7 @@ module "dcos-security-groups" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| accepted_internal_networks | Subnet ranges for all internal networks | list | `<list>` | no |
 | admin_ips | List of CIDR admin IPs | list | - | yes |
 | cluster_name | Name of the DC/OS cluster | string | `aws-example` | no |
 | public_agents_access_ips | List of ips allowed access to public agents. admin_ips are joined to this list | list | `<list>` | no |

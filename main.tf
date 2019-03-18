@@ -33,20 +33,26 @@ resource "aws_security_group" "internal" {
 
   tags = "${merge(var.tags, map("Name", var.cluster_name,
                                 "Cluster", var.cluster_name))}"
+}
 
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["${var.subnet_range}"]
-  }
+resource "aws_security_group_rule" "internal_ingress_rule" {
+  type        = "ingress"
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
+  cidr_blocks = ["${compact(split(",",replace(join(",",var.accepted_internal_networks),"^${var.subnet_range}$", "")))}"]
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  security_group_id = "${aws_security_group.internal.id}"
+}
+
+resource "aws_security_group_rule" "internal_egress_rule" {
+  type        = "egress"
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+
+  security_group_id = "${aws_security_group.internal.id}"
 }
 
 resource "aws_security_group" "master_lb" {
@@ -87,7 +93,7 @@ resource "aws_security_group_rule" "additional_rules" {
   protocol    = "tcp"
   from_port   = "${element(local.public_agents_additional_ports, count.index)}"
   to_port     = "${element(local.public_agents_additional_ports, count.index)}"
-  cidr_blocks = ["${var.public_agents_access_ips}"]
+  cidr_blocks = ["${distinct(var.public_agents_access_ips)}"]
 
   security_group_id = "${aws_security_group.public_agents.id}"
 }
