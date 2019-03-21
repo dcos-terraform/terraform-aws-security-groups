@@ -40,7 +40,7 @@ resource "aws_security_group_rule" "internal_ingress_rule" {
   from_port   = 0
   to_port     = 0
   protocol    = "-1"
-  cidr_blocks = ["${compact(split(",",replace(join(",",var.accepted_internal_networks),"^${var.subnet_range}$", "")))}"]
+  cidr_blocks = ["${concat(var.subnet_range,compact(split(",",replace(join(",",var.accepted_internal_networks),"^${var.subnet_range}$", ""))))}"]
 
   security_group_id = "${aws_security_group.internal.id}"
 }
