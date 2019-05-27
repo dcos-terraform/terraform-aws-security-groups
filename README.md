@@ -18,18 +18,17 @@ module "dcos-security-groups" {
 }
 ```
 
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| admin_ips | List of CIDR admin IPs | list | - | yes |
-| cluster_name | Name of the DC/OS cluster | string | `aws-example` | no |
-| public_agents_access_ips | List of ips allowed access to public agents. admin_ips are joined to this list | list | `<list>` | no |
-| public_agents_additional_ports | List of additional ports allowed for public access on public agents (80 and 443 open by default) | list | `<list>` | no |
-| subnet_range | Private IP space to be used in CIDR format | string | - | yes |
+| admin\_ips | List of CIDR admin IPs | list | n/a | yes |
+| subnet\_range | Private IP space to be used in CIDR format | string | n/a | yes |
+| vpc\_id | AWS VPC ID | string | n/a | yes |
+| cluster\_name | Name of the DC/OS cluster | string | `"aws-example"` | no |
+| public\_agents\_access\_ips | List of ips allowed access to public agents. admin_ips are joined to this list | list | `<list>` | no |
+| public\_agents\_additional\_ports | List of additional ports allowed for public access on public agents (80 and 443 open by default) | list | `<list>` | no |
 | tags | Add custom tags to all resources | map | `<map>` | no |
-| vpc_id | AWS VPC ID | string | - | yes |
 
 ## Outputs
 
@@ -37,6 +36,6 @@ module "dcos-security-groups" {
 |------|-------------|
 | admin | Firewall rules for debuging access |
 | internal | This ELB is internal only |
-| master_lb | Firewall rules for master load balancer |
-| public_agents | Firewall rules for public agents load balancer |
+| master\_lb | Firewall rules for master load balancer |
+| public\_agents | Firewall rules for public agents load balancer |
 
