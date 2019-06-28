@@ -107,6 +107,13 @@ resource "aws_security_group" "admin" {
                                 "Cluster", var.cluster_name))}"
 
   ingress {
+    from_port   = 8
+    to_port     = 0
+    protocol    = "icmp"
+    cidr_blocks = ["${var.admin_ips}"]
+  }
+
+  ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -123,6 +130,20 @@ resource "aws_security_group" "admin" {
   ingress {
     from_port   = 443
     to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["${var.admin_ips}"]
+  }
+
+  ingress {
+    from_port   = 3389
+    to_port     = 3389
+    protocol    = "tcp"
+    cidr_blocks = ["${var.admin_ips}"]
+  }
+
+  ingress {
+    from_port   = 5986
+    to_port     = 5986
     protocol    = "tcp"
     cidr_blocks = ["${var.admin_ips}"]
   }
