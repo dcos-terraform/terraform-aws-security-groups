@@ -39,3 +39,8 @@ variable "accepted_internal_networks" {
   type        = "list"
   default     = []
 }
+
+variable "adminrouter_grpc_proxy_port" {
+  description = ""
+  default     = 12379
+}

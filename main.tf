@@ -135,6 +135,13 @@ resource "aws_security_group" "admin" {
   }
 
   ingress {
+    from_port   = "${var.adminrouter_grpc_proxy_port}"
+    to_port     = "${var.adminrouter_grpc_proxy_port}"
+    protocol    = "tcp"
+    cidr_blocks = ["${var.admin_ips}"]
+  }
+
+  ingress {
     from_port   = 3389
     to_port     = 3389
     protocol    = "tcp"
