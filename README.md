@@ -30,6 +30,8 @@ module "dcos-security-groups" {
 | cluster\_name | Name of the DC/OS cluster | string | `"aws-example"` | no |
 | public\_agents\_access\_ips | List of ips allowed access to public agents. admin_ips are joined to this list | list | `<list>` | no |
 | public\_agents\_additional\_ports | List of additional ports allowed for public access on public agents (80 and 443 open by default) | list | `<list>` | no |
+| public\_agents\_allow\_dynamic | Allow dynamic / ephemeral ports (49152-65535 see: RFC6335) on public agents public IPs | string | `"false"` | no |
+| public\_agents\_allow\_registered | Allow registered / user ports (1024-49151 see: RFC6335) on public agents public IPs | string | `"false"` | no |
 | tags | Add custom tags to all resources | map | `<map>` | no |
 
 ## Outputs

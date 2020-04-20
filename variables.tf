@@ -34,6 +34,16 @@ variable "public_agents_additional_ports" {
   default     = []
 }
 
+variable "public_agents_allow_registered" {
+  description = "Allow registered / user ports (1024-49151 see: RFC6335) on public agents public IPs"
+  default     = false
+}
+
+variable "public_agents_allow_dynamic" {
+  description = "Allow dynamic / ephemeral ports (49152-65535 see: RFC6335) on public agents public IPs"
+  default     = false
+}
+
 variable "accepted_internal_networks" {
   description = "Subnet ranges for all internal networks"
   type        = "list"
