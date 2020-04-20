@@ -26,6 +26,7 @@ module "dcos-security-groups" {
 | subnet\_range | Private IP space to be used in CIDR format | string | n/a | yes |
 | vpc\_id | AWS VPC ID | string | n/a | yes |
 | accepted\_internal\_networks | Subnet ranges for all internal networks | list | `<list>` | no |
+| adminrouter\_grpc\_proxy\_port |  | string | `"12379"` | no |
 | cluster\_name | Name of the DC/OS cluster | string | `"aws-example"` | no |
 | public\_agents\_access\_ips | List of ips allowed access to public agents. admin_ips are joined to this list | list | `<list>` | no |
 | public\_agents\_additional\_ports | List of additional ports allowed for public access on public agents (80 and 443 open by default) | list | `<list>` | no |
