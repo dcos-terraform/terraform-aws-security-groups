@@ -28,6 +28,8 @@ module "dcos-security-groups" {
 | accepted\_internal\_networks | Subnet ranges for all internal networks | list | `<list>` | no |
 | adminrouter\_grpc\_proxy\_port |  | string | `"12379"` | no |
 | cluster\_name | Name of the DC/OS cluster | string | `"aws-example"` | no |
+| open\_admin\_router | Open admin router to public (80+443 on load balancer). WARNING: attackers could take over your cluster | string | `"false"` | no |
+| open\_instance\_ssh | Open SSH on instances to public. WARNING: make sure you use a strong SSH key | string | `"false"` | no |
 | public\_agents\_access\_ips | List of ips allowed access to public agents. admin_ips are joined to this list | list | `<list>` | no |
 | public\_agents\_additional\_ports | List of additional ports allowed for public access on public agents (80 and 443 open by default) | list | `<list>` | no |
 | public\_agents\_allow\_dynamic | Allow dynamic / ephemeral ports (49152-65535 see: RFC6335) on public agents public IPs | string | `"false"` | no |
