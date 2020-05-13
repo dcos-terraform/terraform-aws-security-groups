@@ -67,14 +67,14 @@ resource "aws_security_group" "master_lb" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["${var.open_admin_router ? list("0.0.0.0/0") : list(var.admin_ips)}"]
+    cidr_blocks = ["${split(",", var.open_admin_router ? "0.0.0.0/0" : join(",", var.admin_ips))}"]
   }
 
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["${var.open_admin_router ? list("0.0.0.0/0") : list(var.admin_ips)}"]
+    cidr_blocks = ["${split(",", var.open_admin_router ? "0.0.0.0/0" : join(",", var.admin_ips))}"]
   }
 }
 
@@ -161,7 +161,7 @@ resource "aws_security_group" "admin" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${var.open_instance_ssh ? list("0.0.0.0/0") : list(var.admin_ips)}"]
+    cidr_blocks = ["${split(",", var.open_instance_ssh ? "0.0.0.0/0" : join(",", var.admin_ips))}"]
   }
 
   ingress {
