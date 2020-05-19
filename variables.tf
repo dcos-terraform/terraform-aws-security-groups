@@ -55,3 +55,12 @@ variable "adminrouter_grpc_proxy_port" {
   default     = 12379
 }
 
+variable "open_admin_router" {
+  description = "Open admin router to public (80+443 on load balancer). WARNING: attackers could take over your cluster"
+  default     = false
+}
+
+variable "open_instance_ssh" {
+  description = "Open SSH on instances to public. WARNING: make sure you use a strong SSH key"
+  default     = false
+}

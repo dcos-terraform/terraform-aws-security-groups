@@ -21,7 +21,9 @@
  */
 
 locals {
-  public_agents_additional_ports = concat(["80", "443"], var.public_agents_additional_ports)
+  public_agents_ports            = [80, 443]
+  public_agents_additional_ports = concat(local.public_agents_ports, var.public_agents_additional_ports)
+  admin_ports                    = concat([22, 8181, 9090], local.public_agents_ports, [var.adminrouter_grpc_proxy_port])
 }
 
 provider "aws" {
@@ -75,18 +77,14 @@ resource "aws_security_group" "master_lb" {
     },
   )
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = var.admin_ips
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = var.admin_ips
+  dynamic "ingress" {
+    for_each = local.public_agents_ports
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = var.open_admin_router ? ["0.0.0.0/0"] : var.admin_ips
+    }
   }
 }
 
@@ -157,53 +155,14 @@ resource "aws_security_group" "admin" {
     cidr_blocks = var.admin_ips
   }
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = var.admin_ips
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = var.admin_ips
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = var.admin_ips
-  }
-
-  ingress {
-    from_port   = var.adminrouter_grpc_proxy_port
-    to_port     = var.adminrouter_grpc_proxy_port
-    protocol    = "tcp"
-    cidr_blocks = var.admin_ips
-  }
-
-  ingress {
-    from_port   = 5986
-    to_port     = 5986
-    protocol    = "tcp"
-    cidr_blocks = var.admin_ips
-  }
-
-  ingress {
-    from_port   = 8181
-    to_port     = 8181
-    protocol    = "tcp"
-    cidr_blocks = var.admin_ips
-  }
-
-  ingress {
-    from_port   = 9090
-    to_port     = 9090
-    protocol    = "tcp"
-    cidr_blocks = var.admin_ips
+  dynamic "ingress" {
+    for_each = local.admin_ports
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = var.open_admin_router ? ["0.0.0.0/0"] : var.admin_ips
+    }
   }
 }
 
