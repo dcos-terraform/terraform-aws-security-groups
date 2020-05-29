@@ -10,7 +10,7 @@
  *```hcl
  * module "dcos-security-groups" {
  *   source  = "dcos-terraform/security-groups/aws"
- *   version = "~> 0.2.0"
+ *   version = "~> 0.3.0"
  *
  *   vpc_id = "vpc-12345678"
  *   cluster_name = "production"
