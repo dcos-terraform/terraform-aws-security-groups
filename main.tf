@@ -119,13 +119,13 @@ resource "aws_security_group_rule" "allow_registered" {
   protocol    = "TCP"
   from_port   = "1024"
   to_port     = "49151"
-  cidr_blocks = ["${distinct(var.public_agents_access_ips)}"]
+  cidr_blocks = distinct(var.public_agents_access_ips)
 
-  security_group_id = "${aws_security_group.public_agents.id}"
+  security_group_id = aws_security_group.public_agents.id
 }
 
 resource "aws_security_group_rule" "allow_registered_udp" {
-  count       = "${var.public_agents_allow_registered}"
+  count       = var.public_agents_allow_registered ? 1 : 0
   type        = "ingress"
   protocol    = "UDP"
   from_port   = "1024"
@@ -141,13 +141,13 @@ resource "aws_security_group_rule" "allow_dynamic" {
   protocol    = "TCP"
   from_port   = "49152"
   to_port     = "65535"
-  cidr_blocks = ["${distinct(var.public_agents_access_ips)}"]
+  cidr_blocks = distinct(var.public_agents_access_ips)}
 
-  security_group_id = "${aws_security_group.public_agents.id}"
+  security_group_id = aws_security_group.public_agents.id
 }
 
 resource "aws_security_group_rule" "allow_dynamic_udp" {
-  count       = "${var.public_agents_allow_dynamic}"
+  count       = var.public_agents_allow_dynamic ? 1 : 0
   type        = "ingress"
   protocol    = "UDP"
   from_port   = "49152"
@@ -222,4 +222,3 @@ resource "aws_security_group" "admin" {
     }
   }
 }
-
