@@ -141,7 +141,7 @@ resource "aws_security_group_rule" "allow_dynamic" {
   protocol    = "TCP"
   from_port   = "49152"
   to_port     = "65535"
-  cidr_blocks = distinct(var.public_agents_access_ips)}
+  cidr_blocks = distinct(var.public_agents_access_ips)
 
   security_group_id = aws_security_group.public_agents.id
 }
