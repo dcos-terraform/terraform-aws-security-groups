@@ -116,7 +116,18 @@ resource "aws_security_group_rule" "additional_rules" {
 resource "aws_security_group_rule" "allow_registered" {
   count       = var.public_agents_allow_registered ? 1 : 0
   type        = "ingress"
-  protocol    = "-1"
+  protocol    = "TCP"
+  from_port   = "1024"
+  to_port     = "49151"
+  cidr_blocks = ["${distinct(var.public_agents_access_ips)}"]
+
+  security_group_id = "${aws_security_group.public_agents.id}"
+}
+
+resource "aws_security_group_rule" "allow_registered_udp" {
+  count       = "${var.public_agents_allow_registered}"
+  type        = "ingress"
+  protocol    = "UDP"
   from_port   = "1024"
   to_port     = "49151"
   cidr_blocks = distinct(var.public_agents_access_ips)
@@ -127,7 +138,18 @@ resource "aws_security_group_rule" "allow_registered" {
 resource "aws_security_group_rule" "allow_dynamic" {
   count       = var.public_agents_allow_dynamic ? 1 : 0
   type        = "ingress"
-  protocol    = "-1"
+  protocol    = "TCP"
+  from_port   = "49152"
+  to_port     = "65535"
+  cidr_blocks = ["${distinct(var.public_agents_access_ips)}"]
+
+  security_group_id = "${aws_security_group.public_agents.id}"
+}
+
+resource "aws_security_group_rule" "allow_dynamic_udp" {
+  count       = "${var.public_agents_allow_dynamic}"
+  type        = "ingress"
+  protocol    = "UDP"
   from_port   = "49152"
   to_port     = "65535"
   cidr_blocks = distinct(var.public_agents_access_ips)
@@ -152,6 +174,41 @@ resource "aws_security_group" "admin" {
     from_port   = 8
     to_port     = 0
     protocol    = "icmp"
+    cidr_blocks = var.admin_ips
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.open_admin_router ? ["0.0.0.0/0"] : var.admin_ips
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = var.admin_ips
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = var.admin_ips
+  }
+
+  ingress {
+    from_port   = var.adminrouter_grpc_proxy_port
+    to_port     = var.adminrouter_grpc_proxy_port
+    protocol    = "tcp"
+    cidr_blocks = var.admin_ips
+  }
+
+  ingress {
+    from_port   = 3389
+    to_port     = 3389
+    protocol    = "tcp"
     cidr_blocks = var.admin_ips
   }
 
